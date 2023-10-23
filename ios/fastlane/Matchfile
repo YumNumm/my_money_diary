@@ -1,0 +1,8 @@
+git_url("git@github.com:YumNumm/apple_secrets.git")
+
+storage_mode("git")
+
+type("appstore") # appstore, adhoc, enterprise or development
+
+app_identifier(["net.yumnumm.MoneyDiary"])
+username("yumnumm@icloud.com")
