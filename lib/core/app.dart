@@ -12,7 +12,7 @@ class App extends ConsumerWidget {
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
         // Fictitious brand color.
-        const brandBlue = Colors.greenAccent;
+        const brandColor = Colors.greenAccent;
 
         var lightCustomColors = const CustomColors(danger: Colors.greenAccent);
         var darkCustomColors = const CustomColors(danger: Colors.green);
@@ -25,21 +25,21 @@ class App extends ConsumerWidget {
           lightColorScheme = lightDynamic.harmonized();
           // (Optional) Customize the scheme as desired. For example, one might
           // want to use a brand color to override the dynamic [ColorScheme.secondary].
-          lightColorScheme = lightColorScheme.copyWith(secondary: brandBlue);
+          lightColorScheme = lightColorScheme.copyWith(secondary: brandColor);
           // (Optional) If applicable, harmonize custom colors.
           lightCustomColors = lightCustomColors.harmonized(lightColorScheme);
 
           // Repeat for the dark color scheme.
           darkColorScheme = darkDynamic.harmonized();
-          darkColorScheme = darkColorScheme.copyWith(secondary: brandBlue);
+          darkColorScheme = darkColorScheme.copyWith(secondary: brandColor);
           darkCustomColors = darkCustomColors.harmonized(darkColorScheme);
         } else {
           // Otherwise, use fallback schemes.
           lightColorScheme = ColorScheme.fromSeed(
-            seedColor: brandBlue,
+            seedColor: brandColor,
           );
           darkColorScheme = ColorScheme.fromSeed(
-            seedColor: brandBlue,
+            seedColor: brandColor,
             brightness: Brightness.dark,
           );
         }
