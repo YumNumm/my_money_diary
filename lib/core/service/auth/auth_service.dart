@@ -3,16 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:my_money_diary/core/foundation/result.dart';
 import 'package:my_money_diary/core/service/supabase/supabase_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'login_viewmodel.g.dart';
+part 'auth_service.g.dart';
 
 @riverpod
-LoginService loginService(LoginServiceRef ref) => LoginService(ref);
+AuthService authService(AuthServiceRef ref) => AuthService(ref);
 
-class LoginService {
-  LoginService(this.ref);
+class AuthService {
+  AuthService(this.ref);
 
-  final LoginServiceRef ref;
+  final AuthServiceRef ref;
 
   String? validator(String? value) => switch (value) {
         final String? value when value == null || value.isEmpty =>
@@ -35,4 +36,20 @@ class LoginService {
       return Failure(e);
     }
   }
+
+  Future<Result<void, Exception>> signOut() async {
+    try {
+      final client = ref.read(supabaseClientProvider);
+      await client.auth.signOut();
+      return const Success(null);
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+
+  Session? get currentSession =>
+      ref.read(supabaseClientProvider).auth.currentSession;
+
+  Stream<AuthState> get onAuthStateChange =>
+      ref.read(supabaseClientProvider).auth.onAuthStateChange;
 }

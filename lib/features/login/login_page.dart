@@ -5,15 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_money_diary/core/foundation/result.dart';
 import 'package:my_money_diary/core/router/router.dart';
+import 'package:my_money_diary/core/service/auth/auth_service.dart';
 import 'package:my_money_diary/core/service/supabase/supabase_client.dart';
-import 'package:my_money_diary/features/login/service/login_viewmodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(loginServiceProvider);
+    final viewModel = ref.watch(authServiceProvider);
 
     final isLoading = useState(false);
     final isEmailValid = useState(false);
@@ -21,8 +21,10 @@ class LoginPage extends HookConsumerWidget {
 
     final emailController = useTextEditingController();
     final client = ref.watch(supabaseClientProvider);
-    final authStateSubscription =
-        useMemoized(() => client.auth.onAuthStateChange, []);
+    final authStateSubscription = useMemoized(
+      () => client.auth.onAuthStateChange,
+      [],
+    );
 
     Future<void> signIn() async {
       final email = emailController.text;
