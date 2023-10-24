@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_money_diary/core/router/router.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});
@@ -11,7 +13,7 @@ class ErrorPage extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () => context.go(const SplashRoute().location),
           icon: const Icon(Icons.home),
           label: const Text('戻る'),
         ),
