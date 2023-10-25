@@ -7,13 +7,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_service.g.dart';
 
-@riverpod
-AuthService authService(AuthServiceRef ref) => AuthService(ref);
+@Riverpod(dependencies: [SupabaseClient])
+AuthService authService(AuthServiceRef ref) => AuthService(
+      auth: ref.watch(supabaseClientProvider).auth,
+    );
 
 class AuthService {
-  AuthService(this.ref);
+  AuthService({required this.auth});
 
-  final AuthServiceRef ref;
+  final GoTrueClient auth;
 
   String? validator(String? value) => switch (value) {
         final String? value when value == null || value.isEmpty =>
@@ -25,8 +27,7 @@ class AuthService {
 
   Future<Result<void, Exception>> logIn(String email) async {
     try {
-      final client = ref.read(supabaseClientProvider);
-      await client.auth.signInWithOtp(
+      await auth.signInWithOtp(
         email: email.trim(),
         emailRedirectTo:
             kIsWeb ? null : 'net.yumnumm.MoneyDiary://login-callback',
@@ -39,17 +40,14 @@ class AuthService {
 
   Future<Result<void, Exception>> signOut() async {
     try {
-      final client = ref.read(supabaseClientProvider);
-      await client.auth.signOut();
+      await auth.signOut();
       return const Success(null);
     } on Exception catch (e) {
       return Failure(e);
     }
   }
 
-  Session? get currentSession =>
-      ref.read(supabaseClientProvider).auth.currentSession;
+  Session? get currentSession => auth.currentSession;
 
-  Stream<AuthState> get onAuthStateChange =>
-      ref.read(supabaseClientProvider).auth.onAuthStateChange;
+  Stream<AuthState> get onAuthStateChange => auth.onAuthStateChange;
 }
