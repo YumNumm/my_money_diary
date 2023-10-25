@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_service.g.dart';
 
-@Riverpod(dependencies: [SupabaseClient])
+@Riverpod(dependencies: [supabaseClient])
 AuthService authService(AuthServiceRef ref) => AuthService(
       auth: ref.watch(supabaseClientProvider).auth,
     );
@@ -28,7 +28,7 @@ class AuthService {
   Future<Result<void, Exception>> logIn(String email) async {
     try {
       await auth.signInWithOtp(
-        email: email.trim(),
+        email: email,
         emailRedirectTo:
             kIsWeb ? null : 'net.yumnumm.MoneyDiary://login-callback',
       );
