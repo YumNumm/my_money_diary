@@ -17,13 +17,13 @@ class AuthService {
 
   String? validator(String? value) => switch (value) {
         final String? value when value == null || value.isEmpty =>
-          "メールアドレスを入力してください",
+          'メールアドレスを入力してください',
         final String value when !EmailValidator.validate(value) =>
-          "メールアドレスの形式が正しくありません",
+          'メールアドレスの形式が正しくありません',
         _ => null,
       };
 
-  Future<Result<void, Exception>> signIn(String email) async {
+  Future<Result<void, Exception>> logIn(String email) async {
     try {
       final client = ref.read(supabaseClientProvider);
       await client.auth.signInWithOtp(

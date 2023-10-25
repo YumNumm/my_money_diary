@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
       $loginRoute,
       $errorRoute,
       $splashRoute,
+      $icReaderRoute,
       $homeRoute,
     ];
 
@@ -67,6 +68,28 @@ extension $SplashRouteExtension on SplashRoute {
 
   String get location => GoRouteData.$location(
         '/splash',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $icReaderRoute => GoRouteData.$route(
+      path: '/ic-reader',
+      factory: $IcReaderRouteExtension._fromState,
+    );
+
+extension $IcReaderRouteExtension on IcReaderRoute {
+  static IcReaderRoute _fromState(GoRouterState state) => const IcReaderRoute();
+
+  String get location => GoRouteData.$location(
+        '/ic-reader',
       );
 
   void go(BuildContext context) => context.go(location);

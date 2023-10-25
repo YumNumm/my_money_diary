@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:my_money_diary/core/service/auth/auth_service.dart';
+import 'package:my_money_diary/features/home/component/drawer/home_drawer.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      return null;
-    }, []);
     return Scaffold(
+      drawer: const HomeDrawer(),
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: const Center(
-        child: Text("HOMEPAGE"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(authServiceProvider);
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: const FloatingActionButton(
+        onPressed: null,
+        child: Icon(Icons.add),
       ),
     );
   }

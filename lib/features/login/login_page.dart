@@ -19,6 +19,8 @@ class LoginPage extends HookConsumerWidget {
     final isEmailValid = useState(false);
     final redirecting = useState(false);
 
+    final focusNode = useFocusNode();
+
     final emailController = useTextEditingController();
     final client = ref.watch(supabaseClientProvider);
     final authStateSubscription = useMemoized(
@@ -33,21 +35,20 @@ class LoginPage extends HookConsumerWidget {
       }
       isLoading.value = true;
       emailController.clear();
+      focusNode.unfocus();
       try {
-        final result = await viewModel.signIn(email);
+        final result = await viewModel.logIn(email);
         if (context.mounted) {
           final _ = switch (result) {
             Success() => {
                 if (context.mounted)
                   {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content:
-                            const Text('メールを送信しました。メール内のリンクをタップしてログインしてください'),
-                        backgroundColor: Theme.of(context).colorScheme.error,
+                      const SnackBar(
+                        content: Text('メールを送信しました。メール内のリンクをタップしてログインしてください'),
                       ),
-                    )
-                  }
+                    ),
+                  },
               },
             Failure(exception: final error) => {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -58,7 +59,7 @@ class LoginPage extends HookConsumerWidget {
                     },
                     backgroundColor: Theme.of(context).colorScheme.error,
                   ),
-                )
+                ),
               },
           };
         }
@@ -109,25 +110,30 @@ class LoginPage extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('ログイン'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-        children: [
-          const Text('My家計簿にログインするためには、登録時に使用したメールアドレスを入力してください。'),
-          const SizedBox(height: 18),
-          TextFormField(
-            controller: emailController,
-            decoration: const InputDecoration(labelText: 'メールアドレス'),
-            validator: viewModel.validator,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            // outlined
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 18),
-          FilledButton(
-            onPressed: !isLoading.value && isEmailValid.value ? signIn : null,
-            child: Text(isLoading.value ? '処理中...' : 'メールでログイン'),
-          ),
-        ],
+      body: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+          children: [
+            const Text('My家計簿にを利用するためには、メールアドレスを入力してください。'),
+            const SizedBox(height: 18),
+            TextFormField(
+              focusNode: focusNode,
+              autofocus: true,
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'メールアドレス'),
+              validator: viewModel.validator,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              // outlined
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 18),
+            FilledButton(
+              onPressed: !isLoading.value && isEmailValid.value ? signIn : null,
+              child: Text(isLoading.value ? '処理中...' : 'メールでログイン'),
+            ),
+          ],
+        ),
       ),
     );
   }
