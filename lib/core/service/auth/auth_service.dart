@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_service.g.dart';
 
-@Riverpod(dependencies: [supabaseClient])
+@riverpod
 AuthService authService(AuthServiceRef ref) => AuthService(
       auth: ref.watch(supabaseClientProvider).auth,
     );
@@ -33,8 +33,8 @@ class AuthService {
             kIsWeb ? null : 'net.yumnumm.MoneyDiary://login-callback',
       );
       return const Success(null);
-    } on Exception catch (e) {
-      return Failure(e);
+    } on Exception catch (e, st) {
+      return Failure(e, st);
     }
   }
 
@@ -42,8 +42,8 @@ class AuthService {
     try {
       await auth.signOut();
       return const Success(null);
-    } on Exception catch (e) {
-      return Failure(e);
+    } on Exception catch (e, st) {
+      return Failure(e, st);
     }
   }
 
