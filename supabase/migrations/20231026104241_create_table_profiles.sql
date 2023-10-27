@@ -10,9 +10,10 @@ CREATE TABLE
 
 -- ADD a row to profiles table every time a user signs up.
 -- By using trigger. ref: https://supabase.com/docs/guides/auth/managing-user-data#advanced-techniques
-CREATE FUNCTION public.handle_new_user()
+CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE PLPGSQL
+security definer set search_path = public
 AS $$
 BEGIN
   INSERT
@@ -21,6 +22,7 @@ BEGIN
 END;
 $$;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
@@ -34,4 +36,4 @@ CREATE POLICY "Allow SELECT ONLY own profile"
     USING (auth.uid() = id);
 
 CREATE POLICY "Allow UPDATE ONLY own profile" on public.profiles FOR
-UPDATE USING (auth.uid() = id);
+  UPDATE USING (auth.uid() = id);
