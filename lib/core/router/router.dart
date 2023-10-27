@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_money_diary/features/error/error_page.dart';
-import 'package:my_money_diary/features/home/home_page.dart';
+import 'package:my_money_diary/features/home/home_screen.dart';
 import 'package:my_money_diary/features/ic_reader/ic_reader_screen.dart';
 import 'package:my_money_diary/features/login/login_page.dart';
+import 'package:my_money_diary/features/receipt/ui/receipt_screen.dart';
 import 'package:my_money_diary/features/splash/splash_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,7 +17,9 @@ GoRouter router(RouterRef ref) => GoRouter(
       initialLocation: const SplashRoute().location,
     );
 
-@TypedGoRoute<LoginRoute>(path: '/login')
+@TypedGoRoute<LoginRoute>(
+  path: '/login',
+)
 class LoginRoute extends GoRouteData {
   const LoginRoute();
 
@@ -24,14 +27,18 @@ class LoginRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const LoginPage();
 }
 
-@TypedGoRoute<ErrorRoute>(path: '/error')
+@TypedGoRoute<ErrorRoute>(
+  path: '/error',
+)
 class ErrorRoute extends GoRouteData {
   const ErrorRoute();
   @override
   Widget build(BuildContext context, GoRouterState state) => const ErrorPage();
 }
 
-@TypedGoRoute<SplashRoute>(path: '/splash')
+@TypedGoRoute<SplashRoute>(
+  path: '/splash',
+)
 class SplashRoute extends GoRouteData {
   const SplashRoute();
   @override
@@ -39,7 +46,9 @@ class SplashRoute extends GoRouteData {
       const SplashScreen();
 }
 
-@TypedGoRoute<IcReaderRoute>(path: '/ic-reader')
+@TypedGoRoute<IcReaderRoute>(
+  path: '/ic-reader',
+)
 class IcReaderRoute extends GoRouteData {
   const IcReaderRoute();
   @override
@@ -47,9 +56,21 @@ class IcReaderRoute extends GoRouteData {
       const IcReaderScreen();
 }
 
-@TypedGoRoute<HomeRoute>(path: '/')
+@TypedGoRoute<ReceiptRoute>(
+  path: '/receipt',
+)
+class ReceiptRoute extends GoRouteData {
+  const ReceiptRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ReceiptScreen();
+}
+
+@TypedGoRoute<HomeRoute>(
+  path: '/',
+)
 class HomeRoute extends GoRouteData {
   const HomeRoute();
   @override
-  Widget build(BuildContext context, GoRouterState state) => const HomePage();
+  Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }

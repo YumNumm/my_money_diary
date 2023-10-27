@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: type=lint
+
 part of 'router.dart';
 
 // **************************************************************************
@@ -11,6 +13,7 @@ List<RouteBase> get $appRoutes => [
       $errorRoute,
       $splashRoute,
       $icReaderRoute,
+      $receiptRoute,
       $homeRoute,
     ];
 
@@ -90,6 +93,28 @@ extension $IcReaderRouteExtension on IcReaderRoute {
 
   String get location => GoRouteData.$location(
         '/ic-reader',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $receiptRoute => GoRouteData.$route(
+      path: '/receipt',
+      factory: $ReceiptRouteExtension._fromState,
+    );
+
+extension $ReceiptRouteExtension on ReceiptRoute {
+  static ReceiptRoute _fromState(GoRouterState state) => const ReceiptRoute();
+
+  String get location => GoRouteData.$location(
+        '/receipt',
       );
 
   void go(BuildContext context) => context.go(location);
