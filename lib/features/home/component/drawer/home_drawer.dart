@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,9 +26,9 @@ class HomeDrawer extends ConsumerWidget {
                 children: [
                   if (currentUser != null)
                     UserAccountsDrawerHeader(
-                      accountName: const Text(""),
+                      accountName: const Text(''),
                       accountEmail: Text(
-                        currentUser.email ?? "",
+                        currentUser.email ?? '',
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: colorScheme.onPrimaryContainer,
                         ),
@@ -39,7 +40,7 @@ class HomeDrawer extends ConsumerWidget {
                   ListTile(
                     title: const Text('ICリーダー'),
                     leading: const Icon(Icons.qr_code_scanner),
-                    onTap: () => context.go(IcReaderRoute().location),
+                    onTap: () => context.go(const IcReaderRoute().location),
                   ),
                 ],
               ),
@@ -49,30 +50,16 @@ class HomeDrawer extends ConsumerWidget {
               leading: const Icon(Icons.logout),
               onTap: () async {
                 // 本当にログアウトするか確認するダイアログを表示する
-                final shouldSignOut = await showDialog<bool?>(
+                final shouldSignOut = showOkCancelAlertDialog(
+                  title: 'ログアウトしますか?',
                   context: context,
                   barrierDismissible: false,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('ログアウトしますか？'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('キャンセル'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('ログアウト'),
-                        ),
-                      ],
-                    );
-                  },
+                  isDestructiveAction: true,
                 );
-
                 // ダイアログでログアウトするを選択した場合はログアウトする
                 if (shouldSignOut == true && context.mounted) {
                   // UI Block
-                  showDialog<void>(
+                  await showDialog<void>(
                     context: context,
                     barrierDismissible: false,
                     builder: (context) => const Center(

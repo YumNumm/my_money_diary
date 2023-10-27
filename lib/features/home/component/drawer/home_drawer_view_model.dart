@@ -14,20 +14,19 @@ HomeDrawerViewModel homeDrawerViewModel(HomeDrawerViewModelRef ref) =>
     );
 
 class HomeDrawerViewModel {
-  final AuthService _auth;
-
   HomeDrawerViewModel({required AuthService auth}) : _auth = auth;
+  final AuthService _auth;
 
   Future<Result<void, Exception>> signOut() async {
     try {
       await _auth.signOut();
       return const Success(null);
-    } on AuthException catch (e) {
+    } on AuthException catch (e, st) {
       log('AuthException: $e');
-      return Failure(e);
-    } on Exception catch (e) {
+      return Failure(e, st);
+    } on Exception catch (e, st) {
       log('Exception: $e');
-      return Failure(e);
+      return Failure(e, st);
     }
   }
 }
